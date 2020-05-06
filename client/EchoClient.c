@@ -40,9 +40,14 @@ int main(int argc, char* argv[]) {
 		}
 
 		while (1) {
-				printf("0: get NAME, 1: get HP, 2: get STRENGTH, 3: get PORTION_COUNT\n");
+				printf("0: get NAME, 1: get HP, 2: get STRENGTH, 3: get PORTION_COUNT, 4: TERMINATE \n");
 				scanf("%s", send_buf);
 				write(sockfd, send_buf, strlen(send_buf));
+				if (atoi(send_buf) == MSG_TERMINATE)
+					{
+						printf("TERMINATE COMMUNICATION\n");
+						break;
+					}
 				len = read(sockfd, recv_buf, sizeof(recv_buf));
 				printf("Echo from Server: %s\n", recv_buf);
 		}

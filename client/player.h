@@ -9,6 +9,7 @@
 #define	MSG_HP	1
 #define	MSG_STRENGTH	2
 #define	MSG_PORTION_COUNT	3
+#define	MSG_TERMINATE	4
 
 typedef struct Player
 {
