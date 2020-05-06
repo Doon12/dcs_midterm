@@ -24,7 +24,8 @@ void error (char* msg) {
 int main(int argc, char* argv[]) {
 		int sockfd, filefd, len;
 		struct sockaddr_in servaddr;
-		char buf[BUFSIZE];
+		char send_buf[1];
+		char recv_buf[BUFSIZE];
 
 		if ((sockfd = socket(AF_INET, SOCK_STREAM, 0)) == -1)
 			error("socket() error");
@@ -40,10 +41,10 @@ int main(int argc, char* argv[]) {
 
 		while (1) {
 				printf("0: get NAME, 1: get HP, 2: get STRENGTH, 3: get PORTION_COUNT\n");
-				scanf("%s", buf);
-				write(sockfd, buf, strlen(buf));
-				len = read(sockfd, buf, sizeof(buf));
-				printf("Echo from Server: %s\n", buf);
+				scanf("%s", send_buf);
+				write(sockfd, send_buf, strlen(send_buf));
+				len = read(sockfd, recv_buf, sizeof(recv_buf));
+				printf("Echo from Server: %s\n", recv_buf);
 		}
 
 		close(sockfd);

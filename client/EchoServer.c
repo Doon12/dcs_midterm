@@ -52,12 +52,11 @@ int main(int argc, char* argv[]) {
 	int _strength = 50;
 	int _portion_count = 70;
 	Player* myPlayer = initPlayer(_name, _hp, _strength, _portion_count);
-	printf("now player created\n");
-
-
+	
 	while(1){
 	  // clear player_msg
 		send_msg[0] = '\0';
+		recv_msg[0] = '\0';
 
 		len = read(connfd, recv_msg, sizeof(recv_msg));
 
@@ -77,8 +76,14 @@ int main(int argc, char* argv[]) {
 				sprintf(send_msg, "player's portion count is : %d", getPortionCount(myPlayer));
 				break;
 			default:
-				printf("no such message\n");
+				printf("no such message and exit\n");
 				break;
+		}
+
+		if (strcmp(recv_msg, "4") == 0)
+		{
+			printf("get Termination msg and quit\n");
+			break;
 		}
 
 		write(connfd, send_msg, strlen(send_msg)+1);
