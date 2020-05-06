@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <time.h>
 #include <unistd.h>
 #include <arpa/inet.h>
 #include <sys/types.h>
@@ -47,8 +48,15 @@ int main(int argc, char* argv[]) {
 		error("accept() error");
 
 	/* Phase 2 : Create Player */
-	char _name[] = "Player1";
-	int _hp = 60;
+	send_msg[0] = '\0';
+	recv_msg[0] = '\0';
+
+	len = read(connfd, recv_msg, sizeof(recv_msg));
+
+	printf("MSG ID Received: %s\n", recv_msg);
+	char _name[20];
+	strcpy(_name, recv_msg);
+	int _hp = rand()%101;
 	int _strength = 50;
 	int _portion_count = 70;
 	Player* myPlayer = initPlayer(_name, _hp, _strength, _portion_count);

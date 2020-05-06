@@ -13,6 +13,7 @@
 
 typedef struct Player
 {
+	int64_t id;
 	char name[20];
 	int hp; /* health power. zero to hundred */
 	int strength; /* attack power */

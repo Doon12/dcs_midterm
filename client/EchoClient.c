@@ -39,6 +39,12 @@ int main(int argc, char* argv[]) {
 				error ("connect() error");
 		}
 
+// Log-in stage
+printf("WELCOME TO THE DCS GAME!\n");
+printf("Please Enter Your ID : \n");
+scan("%s", send_buf);
+write(sockfd, send_buf, strlen(send_buf));
+
 		while (1) {
 				printf("0: get NAME, 1: get HP, 2: get STRENGTH, 3: get PORTION_COUNT, 4: TERMINATE \n");
 				scanf("%s", send_buf);
