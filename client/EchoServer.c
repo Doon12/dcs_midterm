@@ -7,6 +7,7 @@
 #include <sys/socket.h>
 #include <sys/stat.h>
 #include <fcntl.h>
+#include "player.h"
 
 #define	BUFSIZE	256
 
@@ -25,6 +26,7 @@ int main(int argc, char* argv[]) {
 	struct sockaddr_in cliaddr, servaddr;
 	socklen_t clilen;
 	char recv_msg[BUFSIZE];
+	char send_msg[BUFSIZE];
 	file_segment segment;
 
 	if ((listenfd = socket(AF_INET, SOCK_STREAM, 0)) == -1)
@@ -44,13 +46,45 @@ int main(int argc, char* argv[]) {
 	if ((connfd = accept(listenfd, (struct sockaddr*)&cliaddr, &clilen)) == -1)
 		error("accept() error");
 
+	/* Phase 2 : Create Player */
+	char _name[] = "Player1";
+	int _hp = 60;
+	int _strength = 50;
+	int _portion_count = 70;
+	Player* myPlayer = initPlayer(_name, _hp, _strength, _portion_count);
+	printf("now player created\n");
+
+
 	while(1){
+	  // clear player_msg
+		send_msg[0] = '\0';
+
 		len = read(connfd, recv_msg, sizeof(recv_msg));
 
-		printf("Data Received: %s\n", recv_msg);
-		recv_msg[len] = '\0';
-		write(connfd, recv_msg, len);
+		printf("MSG TYPE Received: %s\n", recv_msg);
+
+		switch (atoi(recv_msg)) {
+			case MSG_NAME:
+				sprintf(send_msg, "player's name is : %s", getName(myPlayer));
+				break;
+			case MSG_HP:
+				sprintf(send_msg, "player's hp is : %d", getHp(myPlayer));
+				break;
+			case MSG_STRENGTH:
+				sprintf(send_msg, "player's strength is : %d", getStrength(myPlayer));
+				break;
+			case MSG_PORTION_COUNT:
+				sprintf(send_msg, "player's portion count is : %d", getPortionCount(myPlayer));
+				break;
+			default:
+				printf("no such message\n");
+				break;
+		}
+
+		write(connfd, send_msg, strlen(send_msg)+1);
 	}
+
+	destroyPlayer(myPlayer);
 
 	close(connfd);
 	close(listenfd);

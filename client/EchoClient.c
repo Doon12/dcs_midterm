@@ -7,6 +7,7 @@
 #include <sys/socket.h>
 #include <sys/stat.h>
 #include <fcntl.h>
+#include "player.h"
 
 #define	BUFSIZE	256
 
@@ -38,6 +39,7 @@ int main(int argc, char* argv[]) {
 		}
 
 		while (1) {
+				printf("0: get NAME, 1: get HP, 2: get STRENGTH, 3: get PORTION_COUNT\n");
 				scanf("%s", buf);
 				write(sockfd, buf, strlen(buf));
 				len = read(sockfd, buf, sizeof(buf));
